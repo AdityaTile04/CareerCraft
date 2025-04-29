@@ -4,6 +4,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./utils/db.js";
 
+import userRoutes from "./routes/user.routes.js";
+
 dotenv.config();
 const PORT = process.env.PORT || 3001;
 
@@ -22,6 +24,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use("/", userRoutes);
 
 app.listen(PORT, () => {
   connectDB();
