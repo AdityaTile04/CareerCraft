@@ -29,5 +29,5 @@ app.use("/", userRoutes);
 
 app.listen(PORT, () => {
   connectDB();
-  console.log(`Server rinning on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
