@@ -25,7 +25,7 @@ app.use(
   })
 );
 
-app.use("/", userRoutes);
+app.use("/api/user", userRoutes);
 
 app.listen(PORT, () => {
   connectDB();

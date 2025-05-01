@@ -41,7 +41,7 @@ export const register = async (req, res) => {
   }
 };
 
-export const signup = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password, role } = req.body;
     if (!email || !password || !role) {
@@ -119,18 +119,15 @@ export const logout = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { fullname, email, bio, skills } = req.body;
+    const { fullname, email, phoneNumber, bio, skills } = req.body;
     const file = req.file;
-    if (!fullname || !email || !bio || !skills) {
-      return res.status(400).json({
-        message: "All fields required!",
-        success: false,
-      });
-    }
 
     //todo: cloudinary upload
+    let skillsArray;
+    if (skills) {
+      skillsArray = skills.split(",");
+    }
 
-    const skillsArray = skills.split(",");
     const userId = req.id;
     let user = await User.findById(userId);
 
@@ -141,11 +138,11 @@ export const updateProfile = async (req, res) => {
       });
     }
 
-    user.fullname = fullname;
-    (user.email = email),
-      (user.phoneNumber = phoneNumber),
-      (user.profile.bio = bio),
-      (user.profile = skillsArray);
+    if (fullname) user.fullname = fullname;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (bio) user.profile.bio = bio;
+    if (skills) user.profile.skills = skillsArray;
 
     //TODO resume comes later
 
