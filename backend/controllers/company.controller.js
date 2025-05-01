@@ -1,4 +1,4 @@
-import Company from "../models/company.model.js";
+import { Company } from "../models/company.model.js";
 
 export const registerCompany = async (req, res) => {
   try {
@@ -36,14 +36,20 @@ export const registerCompany = async (req, res) => {
 
 export const getCompany = async (req, res) => {
   try {
-    const { id } = req.id;
-    const companies = await Company.find({ userId: id });
+    const userId = req.id;
+    const companies = await Company.find({ userId });
     if (!companies) {
       return res.status(404).json({
         message: "No companies found",
         success: false,
       });
     }
+
+    return res.status(200).json({
+      // message: "Companies found",
+      success: true,
+      companies,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal server error" });
