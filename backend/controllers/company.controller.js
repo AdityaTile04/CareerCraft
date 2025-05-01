@@ -71,3 +71,37 @@ export const getCompanyById = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const updateComapny = async (req, res) => {
+  try {
+    const { name, description, website, location } = req.body;
+    const file = req.file;
+    // todo : cloudinary upload
+
+    const updateData = {
+      name,
+      description,
+      website,
+      location,
+    };
+
+    const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+    });
+
+    if (!company) {
+      return res.status(404).json({
+        message: "Company not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: "Company updated successfully",
+      success: true,
+      company,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
