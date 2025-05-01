@@ -34,4 +34,18 @@ export const registerCompany = async (req, res) => {
   }
 };
 
-
+export const getCompany = async (req, res) => {
+  try {
+    const { id } = req.id;
+    const companies = await Company.find({ userId: id });
+    if (!companies) {
+      return res.status(404).json({
+        message: "No companies found",
+        success: false,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
