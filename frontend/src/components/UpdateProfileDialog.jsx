@@ -14,6 +14,7 @@ import { Loader2 } from "lucide-react";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
   const [loading, setLoading] = useState(false);
+  
   return (
     <div>
       <Dialog open={open}>
