@@ -7,24 +7,51 @@ import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 
 const Login = () => {
+  const [input, setInput] = useState({
+    email: "",
+    password: "",
+    role: "",
+  });
+
+  const handleChange = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(input);
+  };
+
   return (
     <div>
       <Navbar />
       <div className="flex items-center justify-center max-w-7xl mx-auto">
         <form
-          action=""
+          onSubmit={handleSubmit}
           className="w-1/2 border border-gray-200 rounded-md p-4 my-10"
         >
           <h1 className="font-bold text-xl mb-5">Sign Up</h1>
 
           <div className="my-2">
             <Label>Email</Label>
-            <Input type="email" placeholder="email" />
+            <Input
+              type="email"
+              placeholder="email"
+              value={input.name}
+              name="email"
+              onChange={handleChange}
+            />
           </div>
 
           <div className="my-2">
             <Label>Password</Label>
-            <Input type="password" placeholder="aditya" />
+            <Input
+              type="password"
+              placeholder="password"
+              value={input.password}
+              name="password"
+              onChange={handleChange}
+            />
           </div>
           <div className="flex items-center justify-between">
             <RadioGroup className="flex items-center gap-4 my-5">
@@ -32,6 +59,8 @@ const Login = () => {
                 <Input
                   type="radio"
                   name="role"
+                  checked={input.role === "student"}
+                  onChange={handleChange}
                   value="student"
                   className="cursor-pointer"
                 />
@@ -41,6 +70,8 @@ const Login = () => {
                 <Input
                   type="radio"
                   name="role"
+                  checked={input.role === "recruiter"}
+                  onChange={handleChange}
                   value="recruiter"
                   className="cursor-pointer"
                 />
