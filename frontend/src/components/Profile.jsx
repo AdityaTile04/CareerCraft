@@ -69,10 +69,10 @@ const Profile = () => {
           {isHaveResume ? (
             <a
               target="blank"
-              href="#"
+              href={user?.profile?.resume}
               className="text-blue-500 w-full hover:underline cursor-pointer"
             >
-              Aditya's Resume
+              {user?.profile?.resumeOriginalName}
             </a>
           ) : (
             <span>NA</span>

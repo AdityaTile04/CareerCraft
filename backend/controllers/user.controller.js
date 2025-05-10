@@ -2,6 +2,8 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { getDataUri } from "../utils/dataUri.js";
+import cloudinary from "../utils/cloudinary.js";
 dotenv.config();
 
 export const register = async (req, res) => {
@@ -123,7 +125,9 @@ export const updateProfile = async (req, res) => {
     const file = req.file;
 
     //todo: cloudinary upload
-    
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
     let skillsArray;
     if (skills) {
       skillsArray = skills.split(",");
@@ -146,6 +150,11 @@ export const updateProfile = async (req, res) => {
     if (skills) user.profile.skills = skillsArray;
 
     //TODO resume comes later
+
+    if (cloudResponse) {
+      user.profile.resume = cloudResponse.secure_url;
+      user.profile.resumeOriginalName = file.originalname;
+    }
 
     await user.save();
 
