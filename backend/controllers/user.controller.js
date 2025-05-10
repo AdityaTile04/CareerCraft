@@ -123,6 +123,7 @@ export const updateProfile = async (req, res) => {
     const file = req.file;
 
     //todo: cloudinary upload
+    
     let skillsArray;
     if (skills) {
       skillsArray = skills.split(",");
