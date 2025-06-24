@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,8 +11,26 @@ import {
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Edit2, MoreHorizontal } from "lucide-react";
+import { useSelector } from "react-redux";
+import { set } from "zod";
 
 const CompaniesTable = () => {
+  const { companies, searchCompanyByText } = useSelector(
+    (store) => store.company
+  );
+  const [filterCompany, setFilterCompany] = useState(companies);
+
+  useEffect(() => {
+    const filteredCompany =
+      companies.length >= 0 &&
+      companies.filter((company) => {
+        return company.name
+          .toLowerCase()
+          .includes(searchCompanyByText.toLowerCase());
+      });
+    setFilterCompany(filteredCompany);
+  }, [companies, searchCompanyByText]);
+
   return (
     <div>
       <Table>
@@ -26,26 +44,38 @@ const CompaniesTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableCell>
-            <Avatar>
-              <AvatarImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ901eAwCHJkZ_K-vjQz9vX-WNgASX8gisXw&s" />
-            </Avatar>
-          </TableCell>
-          <TableCell>Company Name</TableCell>
-          <TableCell>21-06-2025</TableCell>
-          <TableCell className="text-right cursor-pointer">
-            <Popover>
-              <PopoverTrigger>
-                <MoreHorizontal />
-              </PopoverTrigger>
-              <PopoverContent className="w-37">
-                <div className="flex items-center gap-2 w-fit cursor-pointer">
-                  <Edit2 className="w-4" />
-                  <span>Edit</span>
-                </div>
-              </PopoverContent>
-            </Popover>
-          </TableCell>
+          {Array.isArray(filterCompany) && filterCompany.length > 0 ? (
+            filterCompany.map((company) => (
+              <TableRow key={company._id}>
+                <TableCell>
+                  <Avatar>
+                    <AvatarImage src={company.logo} />
+                  </Avatar>
+                </TableCell>
+                <TableCell>{company.name}</TableCell>
+                <TableCell>{company.createdAt?.split("T")[0]}</TableCell>
+                <TableCell className="text-right cursor-pointer">
+                  <Popover>
+                    <PopoverTrigger>
+                      <MoreHorizontal />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-37">
+                      <div className="flex items-center gap-2 w-fit cursor-pointer">
+                        <Edit2 className="w-4" />
+                        <span>Edit</span>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={4} className="text-center text-gray-500">
+                You haven't registered any company yet.
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>
