@@ -12,6 +12,6 @@ const router = express.Router();
 router.post("/post", isAuthenticated, postJob);
 router.get("/get", isAuthenticated, getAllJobs);
 router.get("/get/:id", isAuthenticated, getJobById);
-router.get("/getadmin", isAuthenticated, getAdminJobs);
+router.get("/getadminjobs", isAuthenticated, getAdminJobs);
 
 export default router;
