@@ -6,10 +6,10 @@ import { setSearchedQuery } from "@/redux/job.slice";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 
 const Browse = () => {
-  useGetAllJobs(); // custom hook that dispatches API call
+  useGetAllJobs(); 
   const dispatch = useDispatch();
 
-  // Get actual jobs array from Redux state
+
   const { allJobs = [] } = useSelector((store) => store.job);
 
   useEffect(() => {
